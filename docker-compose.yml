@@ -2,7 +2,7 @@ version: '2'
 services:
 
   db:
-    image: mysql:5.7
+    image: acidrainpsu/php-mysql-phpmyadmin-sakon:myimage
     container_name: lemp_db
     restart: always
     environment:
