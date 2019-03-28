@@ -1,0 +1,42 @@
+version: '2'
+services:
+
+  db:
+    image: mysql:5.7
+    container_name: lemp_db
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'acidrainpsu'
+      MYSQL_PASSWORD: '253143'
+      MYSQL_ROOT_PASSWORD: '253143'
+    ports:
+      - '3306:3306'
+
+  php:
+    build: ./
+    container_name: lemp_php-fpm
+    restart: always
+    volumes:
+      - ./www/:/var/www/html
+    expose:
+      - "9000"
+
+  nginx:
+    image: nginx:alpine
+    container_name: lemp_nginx
+    restart: always
+    volumes:
+      - ./nginx/conf/nginx.conf:/etc/nginx/conf/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+    volumes_from:
+      - php
+    ports:
+      - 80:80
+      
+  pma:
+      image: phpmyadmin/phpmyadmin
+      container_name: lemp-phpmyadmin
+      restart: always
+      ports:
+        - "8000:80"
